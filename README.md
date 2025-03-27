@@ -1,6 +1,14 @@
-# Python Project
+# LangChain Chat Translator
 
-This is a Python project scaffold with basic configuration for development.
+This project demonstrates the use of LangChain with Ollama to create a language translation application. It connects to the `llama-3.1-8b-italian` model to translate text from English to Italian.
+
+## Key Features
+
+- Integration with LangChain for structured LLM interactions
+- Uses Ollama as a local model provider
+- Translation from English to Italian using LLaMa 3.1 (8B parameter Italian model)
+- Comprehensive logging system
+- Environment variable management
 
 ## Project Structure
 
@@ -52,10 +60,46 @@ Configure your environment variables in the `.env` file.
 
 ## Usage
 
+### Prerequisites
+
+1. Make sure you have [Ollama](https://ollama.ai/) installed and running locally.
+2. Pull the required model:
+   ```bash
+   ollama pull VitoF/llama-3.1-8b-italian:latest
+   ```
+
+### Running the Application
+
 Run the main application:
 
 ```bash
 python -m src.main
+```
+
+This will:
+1. Initialize the LangChain chat model with the Italian LLaMa model
+2. Send a predefined English text for translation
+3. Log the response to the console and log files
+
+### Customizing Translations
+
+To translate your own text, modify the `HumanMessage` content in `src/main.py`:
+
+```python
+messages = [
+    SystemMessage("Translate the following from English into Italian"),
+    HumanMessage(content="Your English text here")
+]
+```
+
+### Sample Output
+
+When running the application, you'll see output similar to:
+
+```
+2025-03-27 14:52:20.123 | INFO     | main:main:30 - Application started in development mode
+2025-03-27 14:52:21.456 | INFO     | main:main:41 - Messages: [SystemMessage(content='Translate the following from English into Italian'), HumanMessage(content='hi! ChatModels are instances of LangChain Runnables, which means they expose a standard interface for interacting with them')]
+2025-03-27 14:52:25.789 | INFO     | main:main:44 - Response: Ciao! I ChatModels sono istanze di LangChain Runnables, il che significa che espongono un'interfaccia standard per interagire con essi
 ```
 
 ## Running Tests
@@ -76,7 +120,6 @@ Pre-commit hooks automatically check your code before each commit to ensure it m
 
 - **isort**: Sorts and formats imports
 - **black**: Formats code to a consistent style
-- **flake8**: Checks for code issues and style problems
 - Additional checks for trailing whitespace, file endings, etc.
 
 To set up pre-commit hooks:
