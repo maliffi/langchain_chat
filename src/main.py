@@ -6,6 +6,7 @@ import os
 from dotenv import load_dotenv
 from langchain.chat_models import init_chat_model
 from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_core.prompts import ChatPromptTemplate
 
 from src.utils.logger import get_logger
 
@@ -31,23 +32,26 @@ def main():
     model = init_chat_model(
         "VitoF/llama-3.1-8b-italian:latest", model_provider="ollama"
     )
-    # Note that ChatModels receive message objects as input and generate message objects as output.
-    # In addition to text content, message objects convey conversational roles and hold important data, such as tool calls and token usage counts
-    messages = [
-        SystemMessage("Translate the following from English into Italian"),
-        HumanMessage(
-            "hi! ChatModels are instances of LangChain Runnables, which means they expose a standard interface for interacting with them"
-        ),
-    ]
-    logger.info(f"Messages: {messages}")
-    # Invoke the chat model
-    response_message = model.invoke(messages)
-    logger.info(f"Response: {response_message.content}")
+    # Build a prompt template
+    system_template = "Translate the following from English into {language}"
+    prompt_template = ChatPromptTemplate.from_messages(
+        [("system", system_template), ("user", "{text_to_translate}")]
+    )
 
-    # Consider that LangChain supports also chat model input as strings:
-    # The following are equivalent:
-    # - model.invoke([{"role": "user", "content": "Hello"}])
-    # - model.invoke([HumanMessage(content="Hello")])
+    # Build the actual prompt from the template
+    # It returns a ChatPromptValue that consists of two messages.
+    # To access the messages directly we do `prompt.to_messages()`
+    prompt = prompt_template.invoke(
+        {
+            "language": "Italian",
+            "text_to_translate": "hi! ChatModels are instances of LangChain Runnables, which means they expose a standard interface for interacting with them",
+        }
+    )
+    logger.info(f"Prompt: {prompt}")
+
+    # Invoke the chat model
+    response_message = model.invoke(prompt)
+    logger.info(f"Response: {response_message.content}")
 
 
 if __name__ == "__main__":
