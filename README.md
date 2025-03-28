@@ -1,6 +1,7 @@
 # LangChain Chat Translator
 
-This project demonstrates the use of LangChain with Ollama to create a language translation application. It connects to the `llama-3.1-8b-italian` model to translate text from English to Italian.
+This project showcases a powerful English-to-Italian translation application built with LangChain and Ollama. It leverages the capabilities of the `llama-3.1-8b-italian` model to provide accurate and contextually appropriate translations.
+It has been developed as an extension of the [LangChain tutorial](https://python.langchain.com/docs/tutorials/llm_chain/), this application demonstrates how to effectively implement LLM-powered language processing within a structured application framework.
 
 ## Key Features
 
