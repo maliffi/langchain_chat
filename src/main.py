@@ -33,7 +33,10 @@ def main():
         "VitoF/llama-3.1-8b-italian:latest", model_provider="ollama"
     )
     # Build a prompt template
-    system_template = "Translate the following from English into {language}"
+    system_template = """
+    Translate the following from English into {language}.
+
+    """
     prompt_template = ChatPromptTemplate.from_messages(
         [("system", system_template), ("user", "{text_to_translate}")]
     )
